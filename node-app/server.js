@@ -8,6 +8,7 @@ const CONTRACT_ADDRESS = '0x05009E35FcadAEDf330FDB310e4aE9f78cbF5C3A';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
+app.use(express.static('../frontend/build'));
 
 app.use(bodyParser.json());
 
