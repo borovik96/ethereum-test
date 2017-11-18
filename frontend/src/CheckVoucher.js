@@ -27,14 +27,44 @@ const FormForCheck = ({sendForm}) => (
       </div>
     </div>
 );
-
+//{serialNumber: "test", fn: "125546", fd: "123165", fpd: "5486423", guaranteeTime: "54512"}
 const ShowData = ({ data, loading, clearData }) => (
     loading
-    ? <div>Подождите, идёт добавление информации в блокчейн</div>
-    : <div>
-      {data.toString()}
-      <Button onClick={clearData}> Посмотреть другой товар</Button>
-      </div>
+        ? <div>Подождите, идёт добавление информации в блокчейн</div>
+        : <div>
+      <Col xs={12} className="response-for-check">
+        <div className="response-for-check__window">
+          <div className="response-data">
+            <table>
+              <tr>
+                <th>Серийный номер:</th>
+                <td>{data.serialNumber}</td>
+              </tr>
+              <tr>
+                <th>Фискальный накопитель:</th>
+                <td>{data.fn}</td>
+              </tr>
+              <tr>
+                <th>Фискальный документ:</th>
+                <td>{data.fd}</td>
+              </tr>
+              <tr>
+                <th>Фискальный признак документа:</th>
+                <td>{data.fpd}</td>
+              </tr>
+              <tr>
+                <th>Гарантия:</th>
+                <td>{data.guaranteeTime}</td>
+              </tr>
+            </table>
+          </div>
+          <br/>
+          <div>
+            <Button onClick={clearData}> Посмотреть другой товар</Button>
+          </div>
+        </div>
+      </Col>
+    </div>
 );
 
 class CheckVoucher extends Component {
@@ -43,7 +73,7 @@ class CheckVoucher extends Component {
   };
 
   clearData = () => {
-    this.setState({ data: null });
+    this.setState({data: null});
   };
 
   sendFormForCheck = (e) => {
@@ -53,11 +83,14 @@ class CheckVoucher extends Component {
     this.setState({
       loading: true,
       data: null
+    }, () => {
+      axios.get(`http://138.68.168.208:3000/ticket/${data.value}`)
+          .then((result) => {
+            console.log(result);
+            this.setState({loading: false, data: result.data});
+          });
     });
-    axios.get(`http://138.68.168.208:3000/ticket/${data.value}`)
-      .then((result) => {
-        this.setState({ loading: false, data: result.data });
-      });
+
   };
 
   render() {
@@ -65,9 +98,9 @@ class CheckVoucher extends Component {
     return (
         <div>
           {
-              data
-                  ? <ShowData clearData={this.clearData} data={data} loading={loading} />
-                  : <FormForCheck sendForm={this.sendFormForCheck} />
+            data
+                ? <ShowData clearData={this.clearData} data={data} loading={loading}/>
+                : <FormForCheck sendForm={this.sendFormForCheck}/>
           }
         </div>
     )
