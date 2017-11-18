@@ -20,17 +20,19 @@ contract Voucher {
   uint countBuyers;
   event setTicketEvent(address addr, uint idTicket);
 
-  function getAmountOfTickets(uint cardNumber, uint idTicket) public constant returns(uint amount) {
+  function getAmountOfTickets(uint cardNumber) public constant returns(uint amount) {
     Buyer storage buyer = listOfBuyers[cardNumber];
     return buyer.amountOfTickets;
   }
 
-  function getTickets(uint cardNumber, uint idTicket) public constant returns(bytes16 _serialNumber,
+  function getTickets(uint cardNumber, uint idTicket) public constant returns(
+                                                            bytes16 _serialNumber,
                                                             uint _fn,
                                                             uint _fd,
                                                             uint _fpd,
                                                             uint _guaranteeTime,
-                                                            bytes16 _warrantyCase) {
+                                                            bytes16 _warrantyCase
+                                                            ) {
     Buyer storage buyer = listOfBuyers[cardNumber];
     return (buyer.listOfTickets[idTicket].serialNumber,
             buyer.listOfTickets[idTicket].fn,
@@ -42,12 +44,14 @@ contract Voucher {
 
   function setTicket(uint cardNumber, uint fn, uint fd, uint fpd, bytes16 serialNumber, uint guaranteeTime, bytes16 warrantyCase) public returns (uint idTicket){
     Buyer storage buyer = listOfBuyers[cardNumber];
-    buyer.listOfTickets[idTicket].serialNumber = serialNumber;
-    buyer.listOfTickets[idTicket].fn = fn;
-    buyer.listOfTickets[idTicket].fd = fd;
-    buyer.listOfTickets[idTicket].fpd = fpd;
-    buyer.listOfTickets[idTicket].guaranteeTime = guaranteeTime;
-    buyer.listOfTickets[idTicket].warrantyCase = warrantyCase;
+    buyer.amountOfTickets++;
+    Ticket storage ticket = buyer.listOfTickets[buyer.amountOfTickets];
+    ticket.serialNumber = serialNumber;
+    ticket.fn = fn;
+    ticket.fd = fd;
+    ticket.fpd = fpd;
+    ticket.guaranteeTime = guaranteeTime;
+    ticket.warrantyCase = warrantyCase;
     return buyer.amountOfTickets;
   }
 
