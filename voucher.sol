@@ -10,6 +10,7 @@ contract Voucher {
     uint fd;
     uint fpd;
     uint guaranteeTime;
+    uint ticketNumber;
   }
 
   struct Buyer {
@@ -33,7 +34,8 @@ contract Voucher {
                                                             uint _fd,
                                                             uint _fpd,
                                                             uint _guaranteeTime,
-                                                            bytes16 _warrantyCase
+                                                            bytes16 _warrantyCase,
+                                                            uint _ticketNumber
                                                             ) {
     Buyer storage buyer = listOfBuyers[cardNumber];
     _productName = buyer.listOfTickets[idTicket].productName;
@@ -43,6 +45,7 @@ contract Voucher {
     _fpd = buyer.listOfTickets[idTicket].fpd;
     _guaranteeTime = buyer.listOfTickets[idTicket].guaranteeTime;
     _warrantyCase = buyer.listOfTickets[idTicket].warrantyCase;
+    _ticketNumber = buyer.listOfTickets[idTicket].ticketNumber;
   }
 
   function setTicket(uint cardNumber, uint fn, uint fd, uint fpd, bytes16 serialNumber, uint guaranteeTime, bytes16 warrantyCase, bytes16 productName) public returns (uint idTicket){
@@ -56,6 +59,8 @@ contract Voucher {
     ticket.guaranteeTime = guaranteeTime;
     ticket.warrantyCase = warrantyCase;
     ticket.productName = productName;
+    ticket.ticketNumber = buyer.amountOfTickets;
+    setTicketEvent(msg.sender, buyer.amountOfTickets);
     return buyer.amountOfTickets;
   }
 
