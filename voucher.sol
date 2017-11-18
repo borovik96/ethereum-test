@@ -1,18 +1,18 @@
 pragma solidity ^0.4.18;
 
 contract Voucher {
-  struct ticket {
+  struct Ticket {
     bytes16 serialNumber;
     uint idTicket;
     uint8 numberVoucher;
     uint16 time;
   }
-  mapping (uint => ticket) listOfTickets;
+  mapping (uint => Ticket) listOfTickets;
   uint idTickets;
   event setTicketEvent(address addr, uint idTicket);
 
-  function getTicket(uint idTicket) public constant returns(bytes16 , uint8 , uint16) {
-    return (listOfTickets[idTicket].serialNumber, listOfTickets[idTicket].numberVoucher, listOfTickets[idTicket].time);
+  function getTicket(uint idTicket) public constant returns(Ticket ticket) {
+    return (listOfTickets[idTicket]);
   }
 
   function setTicket(uint8 numberVoucher, bytes16 serialNumber, uint16 time) public returns (uint){
