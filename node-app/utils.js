@@ -4,7 +4,7 @@ const utils = {
   },
 
   calculateGuaranteeTime(timeOfBuying, during) {
-    const date = new Date(parseInt(imeOfBuying));
+    const date = new Date(parseInt(timeOfBuying));
     return date.setMonth(date.getMonth() + during);
   }
 }
