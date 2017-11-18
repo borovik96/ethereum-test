@@ -1,35 +1,63 @@
 module.exports = [
   {
-    constant: false,
-    inputs: [
-      { name: "numberVoucher", type: "uint8" },
-      { name: "serialNumber", type: "bytes16" },
-      { name: "time", type: "uint16" }
-    ],
-    name: "setTicket",
-    outputs: [{ name: "", type: "uint256" }],
+    constant: true,
+    inputs: [{ name: "cardNumber", type: "uint256" }],
+    name: "getAmountOfTickets",
+    outputs: [{ name: "amount", type: "uint256" }],
     payable: false,
-    stateMutability: "nonpayable",
+    stateMutability: "view",
     type: "function"
   },
   {
     constant: true,
-    inputs: [{ name: "idTicket", type: "uint256" }],
+    inputs: [
+      { name: "cardNumber", type: "uint256" },
+      { name: "idTicket", type: "uint256" },
+      { name: "time", type: "uint256" }
+    ],
+    name: "checkGuarantee",
+    outputs: [{ name: "restGuaranteeTime", type: "uint256" }],
+    payable: false,
+    stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: true,
+    inputs: [
+      { name: "cardNumber", type: "uint256" },
+      { name: "idTicket", type: "uint256" }
+    ],
     name: "getTicket",
     outputs: [
-      {
-        components: [
-          { name: "serialNumber", type: "bytes16" },
-          { name: "idTicket", type: "uint256" },
-          { name: "numberVoucher", type: "uint8" },
-          { name: "time", type: "uint16" }
-        ],
-        name: "ticket",
-        type: "tuple"
-      }
+      { name: "_productName", type: "bytes16" },
+      { name: "_serialNumber", type: "bytes16" },
+      { name: "_fn", type: "uint256" },
+      { name: "_fd", type: "uint256" },
+      { name: "_fpd", type: "uint256" },
+      { name: "_guaranteeTime", type: "uint256" },
+      { name: "_warrantyCase", type: "bytes16" },
+      { name: "_ticketNumber", type: "uint256" }
     ],
     payable: false,
     stateMutability: "view",
+    type: "function"
+  },
+  {
+    constant: false,
+    inputs: [
+      { name: "cardNumber", type: "uint256" },
+      { name: "fn", type: "uint256" },
+      { name: "fd", type: "uint256" },
+      { name: "fpd", type: "uint256" },
+      { name: "serialNumber", type: "bytes16" },
+      { name: "guaranteeTime", type: "uint256" },
+      { name: "warrantyCase", type: "bytes16" },
+      { name: "productName", type: "bytes16" }
+    ],
+    name: "setTicket",
+    outputs: [{ name: "idTicket", type: "uint256" }],
+    payable: false,
+    stateMutability: "nonpayable",
     type: "function"
   },
   {

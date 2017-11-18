@@ -1,13 +1,20 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Web3 = require('web3');
-const utils = require('./web3-utils');
+const utils = require('./utils');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0x1Dc6B99744426CD650FF229C6e66A607434fA31e';
+const CONTRACT_ADDRESS = '0x630135b458aaED5f117951D93511e0a7397e70ed';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
+app.use(express.static('../frontend/build'));
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
 app.use(bodyParser.json());
 
@@ -17,7 +24,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider("http://138.68.168.208:854
 const eth = web3.eth;
 const personal = web3.personal;
 
-utils.importAccount(web3, '7703a860b087317bbd2e44a52a233df843ad22db3b60fb816aef97a8054f20a2', 'toor');
+// utils.importAccount(web3, '7703a860b087317bbd2e44a52a233df843ad22db3b60fb816aef97a8054f20a2', 'toor');
 
 console.log('Accounts: ', eth.accounts);
 eth.defaultAccount = eth.accounts[1];
@@ -28,17 +35,27 @@ const contract = eth.contract(ABI).at(CONTRACT_ADDRESS);
 
 
 app.post('/ticket', (req, res) => {
-  const { numberVoucher, serialNumber, timestamp } = req.body;
-  contract.setTicket(
-    numberVoucher,
+  const {
+    cardNumber,
+    fn, fd, fpd,
     serialNumber,
-    timestamp,
+    dateOfBuying,
+    during, productName, warrantyCase
+  } = req.body;
+  contract.setTicket(
+    cardNumber,
+    fn, fd, fpd,
+    serialNumber,
+    utils.calculateGuaranteeTime(dateOfBuying, during),
+    warrantyCase,
+    productName,
     transactionOptions,
     (err, tx) => {
       console.log(`Transaction: ${tx}`);
       if (err) res.status(500);
       const setTicketEvent = contract.setTicketEvent();
       setTicketEvent.watch((eventError, result) => {
+        console.log('Event: ', eventError, result);
         if (eventError) res.error(500);
         res.send(result);
         setTicketEvent.stopWatching();
@@ -47,12 +64,54 @@ app.post('/ticket', (req, res) => {
   )
 });
 
-app.get('/ticket/:id', (req, res) => {
-  contract.getTicket(
-    req.params.id,
+app.get('/account/:id', (req, res) => {
+  const cardNumber = req.params.id;
+  contract.getAmountOfTickets(
+    cardNumber,
     transactionOptions,
-    (result) => {
-      res.send(result);
+    (err, idTicket) => {
+      if (err) {
+        console.error('GET TICKET: ', err);
+        res.status(500);
+        res.send(err.message);
+        return;
+      }
+      const amountOfTickets = parseInt(idTicket.toString());
+      console.log('GET TICKETS NUMBER: ', amountOfTickets);
+      let indexTicket = amountOfTickets;
+      const tickets = [];
+      while(indexTicket--) {
+        contract.getTicket(cardNumber, indexTicket + 1, (err, result) => {
+
+          let productName = web3.toAscii(result[0]);
+          productName = productName.slice(0, productName.indexOf('\u0000'));
+
+          let serialNumber = web3.toAscii(result[1]);
+          serialNumber = serialNumber.slice(0, serialNumber.indexOf('\u0000'));
+
+          const fn = result[2].toString();
+          const fd = result[3].toString();
+          const fpd = result[4].toString();
+          const guaranteeTime = result[5].toString();
+
+          let warrantyCase = web3.toAscii(result[6]);
+          warrantyCase = warrantyCase.slice(0, warrantyCase.indexOf('\u0000'));
+          const ticketId = result[7].toString();
+          const ticket = {
+            serialNumber,
+            fn, fd, fpd,
+            guaranteeTime,
+            warrantyCase,
+            productName,
+            ticketId
+          };
+
+          tickets.push(ticket);
+          if (tickets.length === amountOfTickets) res.send({
+            tickets
+          });
+        });
+      }
     }
   )
 });

@@ -12,7 +12,9 @@ body {
 }
 
 .App-header {
-    background-color: #222;
+    /*background-color: #222;*/
+    background-image: url('https://static.tildacdn.com/tild6664-3832-4064-b038-376232653534/Background.jpg');
+    background-size: 100% 100%;
     height: 100vh;
     padding: 20px;
     color: white;
@@ -51,7 +53,7 @@ body {
 
 .form-container {
     /*background-color: #777;*/
-    background-image: url('./background-for-form.jpg');
+    /*background-image: url('./background-for-form.jpg');*/
     padding: 50px 100px;
     text-align: left;
 }
@@ -68,4 +70,41 @@ footer {
 
 .form-request {
     width: 40%;
+}
+
+.response-for-add {
+    background-color: #fff;
+    padding-bottom: 4%;
+}
+
+.response-for-check__window {
+    font-size: 130%;
+    padding: 30px 70px;
+    background-color: #ddd;
+    text-align: center;
+    margin: 5% 25%;
+    border-radius: 10px;
+}
+.response-for-check table  {
+    text-align: left;
+    width: 70%;
+    margin: 0 auto;
+}
+.response-for-check th, td {
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+.response-for-new {
+    background-color: #fff;
+    padding-bottom: 4%;
+}
+
+.response-for-add__window {
+    font-size: 130%;
+    padding: 30px 70px;
+    background-color: #ddd;
+    text-align: center;
+    margin: 5% 25%;
+    border-radius: 10px;
 }

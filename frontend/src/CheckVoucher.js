@@ -11,35 +11,97 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Form from 'react-bootstrap/lib/Form';
 import axios from 'axios';
 
-function sendForm(e) {
-  e.preventDefault();
-  const form = e.target;
-  var data = form.querySelector('#idVoucher');
-  axios.post('http://138.68.168.208:8545', {"numberVoucher": data.value})
-}
-
-const FormForCheck = () => (
+const FormForCheck = ({sendForm}) => (
     <div className="CheckVoucher">
-        <div className="form-container">
-          <Form className="form-request" onSubmit={sendForm}>
-            <FormGroup>
-              <ControlLabel>Введите данные для проверки</ControlLabel>
-              <FormControl type="text" placeholder="Введите ID" id="idVoucher"/>
-            </FormGroup>
+      <div className="form-container">
+        <Form className="form-request" onSubmit={sendForm}>
+          <FormGroup>
+            <ControlLabel>Введите данные для проверки</ControlLabel>
+            <FormControl type="text" placeholder="Введите ID" id="idVoucher"/>
+          </FormGroup>
 
-            <Button type="submit" bsStyle="primary">
-              Проверить гарантию
-            </Button>
-          </Form>
+          <Button type="submit" bsStyle="primary">
+            Проверить гарантию
+          </Button>
+        </Form>
+      </div>
+    </div>
+);
+//{serialNumber: "test", fn: "125546", fd: "123165", fpd: "5486423", guaranteeTime: "54512"}
+const ShowData = ({ data, loading, clearData }) => (
+    loading
+        ? <div>Подождите, идёт добавление информации в блокчейн</div>
+        : <div>
+      <Col xs={12} className="response-for-check">
+        <div className="response-for-check__window">
+          <div className="response-data">
+            <table>
+              <tr>
+                <th>Серийный номер:</th>
+                <td>{data.serialNumber}</td>
+              </tr>
+              <tr>
+                <th>Фискальный накопитель:</th>
+                <td>{data.fn}</td>
+              </tr>
+              <tr>
+                <th>Фискальный документ:</th>
+                <td>{data.fd}</td>
+              </tr>
+              <tr>
+                <th>Фискальный признак документа:</th>
+                <td>{data.fpd}</td>
+              </tr>
+              <tr>
+                <th>Гарантия:</th>
+                <td>{data.guaranteeTime}</td>
+              </tr>
+            </table>
+          </div>
+          <br/>
+          <div>
+            <Button onClick={clearData}> Посмотреть другой товар</Button>
+          </div>
         </div>
+      </Col>
     </div>
 );
 
 class CheckVoucher extends Component {
+  state = {
+    loading: false
+  };
+
+  clearData = () => {
+    this.setState({data: null});
+  };
+
+  sendFormForCheck = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    var data = form.querySelector('#idVoucher');
+    this.setState({
+      loading: true,
+      data: null
+    }, () => {
+      axios.get(`http://138.68.168.208:3000/ticket/${data.value}`)
+          .then((result) => {
+            console.log(result);
+            this.setState({loading: false, data: result.data});
+          });
+    });
+
+  };
+
   render() {
+    const { data, loading } = this.state;
     return (
         <div>
-          <FormForCheck />
+          {
+            data
+                ? <ShowData clearData={this.clearData} data={data} loading={loading}/>
+                : <FormForCheck sendForm={this.sendFormForCheck}/>
+          }
         </div>
     )
   }
