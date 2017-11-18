@@ -93,13 +93,14 @@ app.get('/account/:id', (req, res) => {
 
           let warrantyCase = web3.toAscii(result[6]);
           warrantyCase = warrantyCase.slice(0, warrantyCase.indexOf('\u0000'));
-
+          const ticketId = result[7].toString();
           const ticket = {
             serialNumber,
             fn, fd, fpd,
             guaranteeTime,
             warrantyCase,
-            productName
+            productName,
+            ticketId
           };
 
           tickets.push(ticket);
