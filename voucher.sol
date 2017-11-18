@@ -9,11 +9,9 @@ contract Voucher {
   }
   mapping (uint => ticket) listOfTickets;
   uint idTickets;
-  event getTicketEvent(address addr, uint ticketId);
   event setTicketEvent(address addr, uint idTicket);
 
   function getTicket(uint idTicket) public constant returns(bytes16 , uint8 , uint16) {
-    getTicketEvent(msg.sender, idTicket);
     return (listOfTickets[idTicket].serialNumber, listOfTickets[idTicket].numberVoucher, listOfTickets[idTicket].time);
   }
 
