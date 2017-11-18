@@ -13,22 +13,9 @@ import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
-function sendFormForAdd(e) {
-  e.preventDefault();
-  const form = e.tagret;
-  const idVoucher = form.querySelector('#idVoucher');
-  const serialNumber = form.querySelector('#serialNumber');
-  const dateVoucher = form.querySelector('#date');
-  const fn = form.querySelector('#fn');
-  const fd = form.querySelector('#fd');
-  const fpd = form.querySelector('#fpd');
-  const guarantee = form.querySelector('#guarantee');
-  axios.post('http://138.68.168.208:8545', {serialNumber, "guaranteeTime": dateVoucher, fn, fd, fpd, guarantee})
-}
-
-const FormForAddingNewVoucher = () => (
+const FormForAddingNewVoucher = ({sendForm}) => (
     <div className="form-container">
-      <Form className="form-request" onSubmit={sendFormForAdd}>
+      <Form className="form-request" onSubmit={sendForm}>
         <FormGroup>
           <ControlLabel>Введите серийный номер</ControlLabel>
           <FormControl type="text" placeholder="Серийный номер" id="serialNumber"/>
@@ -61,11 +48,50 @@ const FormForAddingNewVoucher = () => (
     </div>
 );
 
+const ShowData = ({ data, loading, clearData }) => {
+  if (loading) return <div>Loading</div>;
+  return <div>
+    <p>Id: {data.id}</p>
+  </div>
+}
+
 class NewVoucher extends Component {
+  state = {
+    loading: false,
+    data: null
+  }
+
+  sendForm = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const serialNumber = form.querySelector('#serialNumber').value;
+    const dateVoucher = form.querySelector('#date').value;
+    const fn = form.querySelector('#fn').value;
+    const fd = form.querySelector('#fd').value;
+    const fpd = form.querySelector('#fpd').value;
+    const guarantee = form.querySelector('#guarantee').value;
+    this.setState({ loading: true });
+    axios.post(
+        'http://138.68.168.208:3000/ticket',
+        {serialNumber, "guaranteeTime": dateVoucher, fn, fd, fpd, guarantee}
+    ).then((res) => {
+        this.setState({ loading: false, data: res.data });
+    });
+  };
+
+  clearData = () => {
+    this.setState({ data: null });
+  };
+
   render() {
+    const { loading, data } = this.state;
     return (
         <div>
-          <FormForAddingNewVoucher />
+          {
+              data
+                ? <ShowData loading={loading} data={data} clearData={this.clearData} />
+                : <FormForAddingNewVoucher sendForm={this.sendForm} />
+          }
         </div>
     )
   }

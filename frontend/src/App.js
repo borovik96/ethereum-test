@@ -15,6 +15,7 @@ import CheckVoucher from './CheckVoucher';
 import NewVoucher from './NewVoucher';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { Route, Link} from 'react-router-dom';
 
 const Main = () => (
     <div>
@@ -36,7 +37,7 @@ const Main = () => (
           <div id="check-button">
             <p>Что-то</p>
             <ButtonToolbar>
-              <Button bsStyle="primary" bsSize="large">Проверить гарантию</Button>
+              <Link className="btn btn-primary" to="/check">Проверить гарантию</Link>
             </ButtonToolbar>
           </div>
         </Col>
@@ -72,9 +73,9 @@ class App extends Component {
       //  </p>
       //</div>
         <div className="App">
-          <Main />
-          <CheckVoucher />
-          <NewVoucher />
+          <Route path="/" exact component={Main}/>
+          <Route path="/check" component={CheckVoucher}/>
+          <Route path="/new" component={NewVoucher}/>
           <Footer />
         </div>
     );
