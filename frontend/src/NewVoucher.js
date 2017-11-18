@@ -17,6 +17,10 @@ const FormForAddingNewVoucher = ({sendForm}) => (
     <div className="form-container">
       <Form className="form-request" onSubmit={sendForm}>
         <FormGroup>
+          <ControlLabel>Введите номер карты</ControlLabel>
+          <FormControl type="text" placeholder="Номер карты" id="cardNumber"/>
+        </FormGroup>
+        <FormGroup>
           <ControlLabel>Введите серийный номер</ControlLabel>
           <FormControl type="text" placeholder="Серийный номер" id="serialNumber"/>
         </FormGroup>
@@ -50,16 +54,18 @@ const FormForAddingNewVoucher = ({sendForm}) => (
 
 const ShowData = ({ data, loading, clearData }) => {
   if (loading) return <div>Loading</div>;
-  return <div>
-    <p>Id: {data.id}</p>
+  return <div className="response-for-new">
+    <div className="response-for-new__window">
+      <h2>Ваш Id: {data.args.idTicket}</h2>
+    </div>
   </div>
-}
+};
 
 class NewVoucher extends Component {
   state = {
     loading: false,
     data: null
-  }
+  };
 
   sendForm = (e) => {
     e.preventDefault();
@@ -70,17 +76,18 @@ class NewVoucher extends Component {
     const fd = form.querySelector('#fd').value;
     const fpd = form.querySelector('#fpd').value;
     const guarantee = form.querySelector('#guarantee').value;
-    this.setState({ loading: true });
+    const cardNumber = form.querySelector('#cardNumber').value;
+    this.setState({loading: true});
     axios.post(
         'http://138.68.168.208:3000/ticket',
-        {serialNumber, "guaranteeTime": dateVoucher, fn, fd, fpd, guarantee}
+        {cardNumber, serialNumber, "guaranteeTime": dateVoucher, fn, fd, fpd, guarantee}
     ).then((res) => {
-        this.setState({ loading: false, data: res.data });
+      this.setState({loading: false, data: res.data});
     });
   };
 
   clearData = () => {
-    this.setState({ data: null });
+    this.setState({data: null});
   };
 
   render() {
@@ -88,9 +95,9 @@ class NewVoucher extends Component {
     return (
         <div>
           {
-              data
-                ? <ShowData loading={loading} data={data} clearData={this.clearData} />
-                : <FormForAddingNewVoucher sendForm={this.sendForm} />
+            data
+                ? <ShowData loading={loading} data={data} clearData={this.clearData}/>
+                : <FormForAddingNewVoucher sendForm={this.sendForm}/>
           }
         </div>
     )
