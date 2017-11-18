@@ -40,13 +40,15 @@ app.post('/ticket', (req, res) => {
     fn, fd, fpd,
     serialNumber,
     dateOfBuying,
-    during
+    during, productName, warrantyCase
   } = req.body;
   contract.setTicket(
     cardNumber,
     fn, fd, fpd,
     serialNumber,
     utils.calculateGuaranteeTime(dateOfBuying, during),
+    warrantyCase,
+    productName,
     transactionOptions,
     (err, tx) => {
       console.log(`Transaction: ${tx}`);
