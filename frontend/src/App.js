@@ -13,6 +13,8 @@ import Form from 'react-bootstrap/lib/Form';
 import axios from 'axios';
 import CheckVoucher from './CheckVoucher';
 import NewVoucher from './NewVoucher';
+import DatePicker from 'react-datepicker';
+import moment from 'moment';
 
 const Main = () => (
     <div>
@@ -72,6 +74,7 @@ class App extends Component {
         <div className="App">
           <Main />
           <CheckVoucher />
+          <NewVoucher />
           <Footer />
         </div>
     );
