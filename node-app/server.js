@@ -2,18 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Web3 = require('web3');
 const utils = require('./utils');
-// const puppeteer = require('puppeteer');
-
-// let page;
-// (async () => {
-//   const browser = await puppeteer.launch();
-//   page = await browser.newPage();
-//   await page.goto('https://consumer.1-ofd.ru/#/landing');
-//   // await page.screenshot({path: 'example.png'});
-// })();
+const puppeteer = require('puppeteer');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0x003e0DdbEFAB54132Bd0399FA74B8b56ADB2036F';
+const CONTRACT_ADDRESS = '0x1279900e2De7E91c7a119A8D9eD6341C068e2270';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
@@ -87,24 +79,28 @@ app.get('/account/:id', (req, res) => {
       let indexTicket = amountOfTickets;
       const tickets = [];
       while(indexTicket--) {
-        contract.getTickets(cardNumber, indexTicket + 1, (err, result) => {
+        contract.getTicket(cardNumber, indexTicket + 1, (err, result) => {
 
-          let serialNumber = web3.toAscii(result[0]);
+          let productName = web3.toAscii(result[0]);
+          productName = productName.slice(0, productName.indexOf('\u0000'));
+
+          let serialNumber = web3.toAscii(result[1]);
           serialNumber = serialNumber.slice(0, serialNumber.indexOf('\u0000'));
 
-          const fn = result[1].toString();
-          const fd = result[2].toString();
-          const fpd = result[3].toString();
-          const guaranteeTime = result[4].toString();
+          const fn = result[2].toString();
+          const fd = result[3].toString();
+          const fpd = result[4].toString();
+          const guaranteeTime = result[5].toString();
 
-          let warrantyCase = web3.toAscii(result[5]);
+          let warrantyCase = web3.toAscii(result[6]);
           warrantyCase = warrantyCase.slice(0, warrantyCase.indexOf('\u0000'));
 
           const ticket = {
             serialNumber,
             fn, fd, fpd,
             guaranteeTime,
-            warrantyCase
+            warrantyCase,
+            productName
           };
 
           tickets.push(ticket);
@@ -115,4 +111,18 @@ app.get('/account/:id', (req, res) => {
       }
     }
   )
+});
+
+app.get('/ticket', async (req, res) => {
+  const { fn, fp, fpd } = req.query;
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto('https://consumer.1-ofd.ru/#/landing');
+  await page.select('#numberFn', fn);
+  await page.select('#numberFd', fd);
+  await page.select('#fp', fp);
+  await page.click('form[name=searchForm] button');
+  await page.screenshot({ path: 'example.png' });
+  console.log('screenshot done');
+  res.send('done');
 });
