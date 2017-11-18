@@ -1,44 +1,62 @@
 pragma solidity ^0.4.18;
 
 contract Voucher {
+
   struct Ticket {
     bytes16 serialNumber;
-    uint idTicket;
-    uint16 fn;
-    uint16 fd;
-    uint16 fpd;
-    uint16 guaranteeTime;
+    bytes16 warrantyCase;
+    uint fn;
+    uint fd;
+    uint fpd;
+    uint guaranteeTime;
   }
-  mapping (uint => Ticket) listOfTickets;
-  uint idTickets;
+
+  struct Buyer {
+    uint amountOfTickets;
+    mapping (uint => Ticket) listOfTickets;
+  }
+
+  mapping (uint => Buyer) listOfBuyers;
+  uint countBuyers;
   event setTicketEvent(address addr, uint idTicket);
 
-  function getTicket(uint idTicket) public constant returns(bytes16 _serialNumber,
-                                                            uint16 _fn,
-                                                            uint16 _fd,
-                                                            uint16 _fpd,
-                                                            uint16 _guaranteeTime) {
-    return (listOfTickets[idTicket].serialNumber,
-            listOfTickets[idTicket].fn,
-            listOfTickets[idTicket].fd,
-            listOfTickets[idTicket].fpd,
-            listOfTickets[idTicket].guaranteeTime);
+  function getAmountOfTickets(uint cardNumber, uint idTicket) public constant returns(uint amount) {
+    Buyer storage buyer = listOfBuyers[cardNumber];
+    return buyer.amountOfTickets;
   }
 
-  function setTicket(uint16 fn, uint16 fd, uint16 fpd, bytes16 serialNumber, uint16 guaranteeTime) public returns (uint idTicket){
-    idTickets++;
-    listOfTickets[idTickets].serialNumber = serialNumber;
-    listOfTickets[idTickets].fn = fn;
-    listOfTickets[idTickets].fd = fd;
-    listOfTickets[idTickets].fpd = fpd;
-    listOfTickets[idTickets].guaranteeTime = guaranteeTime;
-    setTicketEvent(msg.sender, idTickets);
-    return idTickets;
+  function getTickets(uint cardNumber, uint idTicket) public constant returns(bytes16 _serialNumber,
+                                                            uint _fn,
+                                                            uint _fd,
+                                                            uint _fpd,
+                                                            uint _guaranteeTime,
+                                                            bytes16 _warrantyCase) {
+    Buyer storage buyer = listOfBuyers[cardNumber];
+    return (buyer.listOfTickets[idTicket].serialNumber,
+            buyer.listOfTickets[idTicket].fn,
+            buyer.listOfTickets[idTicket].fd,
+            buyer.listOfTickets[idTicket].fpd,
+            buyer.listOfTickets[idTicket].guaranteeTime,
+            buyer.listOfTickets[idTicket].warrantyCase);
   }
 
-  function checkGuarantee(uint idTicket, uint16 time) public constant returns(uint restGuaranteeTime) {
-    require(time <= listOfTickets[idTicket].guaranteeTime);
-    return listOfTickets[idTicket].guaranteeTime - time;
+  function setTicket(uint cardNumber, uint fn, uint fd, uint fpd, bytes16 serialNumber, uint guaranteeTime, bytes16 warrantyCase) public returns (uint idTicket){
+    Buyer storage buyer = listOfBuyers[cardNumber];
+    buyer.listOfTickets[idTicket].serialNumber = serialNumber;
+    buyer.listOfTickets[idTicket].fn = fn;
+    buyer.listOfTickets[idTicket].fd = fd;
+    buyer.listOfTickets[idTicket].fpd = fpd;
+    buyer.listOfTickets[idTicket].guaranteeTime = guaranteeTime;
+    buyer.listOfTickets[idTicket].warrantyCase = warrantyCase;
+    return buyer.amountOfTickets;
+  }
+
+  function checkGuarantee(uint cardNumber, uint idTicket, uint time) public constant returns(uint restGuaranteeTime) {
+    Buyer storage buyer = listOfBuyers[cardNumber];
+    Ticket storage ticket = buyer.listOfTickets[idTicket];
+    uint guaranteeTime = ticket.guaranteeTime;
+    require(time <= guaranteeTime);
+    return guaranteeTime - time;
   }
 
 }
