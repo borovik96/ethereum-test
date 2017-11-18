@@ -113,16 +113,16 @@ app.get('/account/:id', (req, res) => {
   )
 });
 
-app.get('/ticket', async (req, res) => {
-  const { fn, fp, fpd } = req.query;
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.goto('https://consumer.1-ofd.ru/#/landing');
-  await page.select('#numberFn', fn);
-  await page.select('#numberFd', fd);
-  await page.select('#fp', fp);
-  await page.click('form[name=searchForm] button');
-  await page.screenshot({ path: 'example.png' });
-  console.log('screenshot done');
-  res.send('done');
-});
+// app.get('/ticket', (req, res) => {
+//   const { fn, fp, fpd } = req.query;
+//   const browser = await puppeteer.launch();
+//   const page = await browser.newPage();
+//   await page.goto('https://consumer.1-ofd.ru/#/landing');
+//   await page.select('#numberFn', fn);
+//   await page.select('#numberFd', fd);
+//   await page.select('#fp', fp);
+//   await page.click('form[name=searchForm] button');
+//   await page.screenshot({ path: 'example.png' });
+//   console.log('screenshot done');
+//   res.send('done');
+// });
