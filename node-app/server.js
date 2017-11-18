@@ -4,7 +4,7 @@ const Web3 = require('web3');
 const utils = require('./utils');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0xE0A26Ce768129Fa8A46Ca7f81cC53507Eabb06bd';
+const CONTRACT_ADDRESS = '0x630135b458aaED5f117951D93511e0a7397e70ed';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
