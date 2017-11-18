@@ -13,11 +13,19 @@ contract Voucher {
   uint idTickets;
   event setTicketEvent(address addr, uint idTicket);
 
-  function getTicket(uint idTicket) public constant returns(Ticket ticket) {
-    return (listOfTickets[idTicket]);
+  function getTicket(uint idTicket) public constant returns(bytes16 _serialNumber,
+                                                            uint16 _fn,
+                                                            uint16 _fd,
+                                                            uint16 _fpd,
+                                                            uint16 _guaranteeTime) {
+    return (listOfTickets[idTicket].serialNumber,
+            listOfTickets[idTicket].fn,
+            listOfTickets[idTicket].fd,
+            listOfTickets[idTicket].fpd,
+            listOfTickets[idTicket].guaranteeTime);
   }
 
-  function setTicket(uint16 fn, uint16 fd, uint16 fpd, bytes16 serialNumber, uint16 guaranteeTime) public returns (uint){
+  function setTicket(uint16 fn, uint16 fd, uint16 fpd, bytes16 serialNumber, uint16 guaranteeTime) public returns (uint idTicket){
     idTickets++;
     listOfTickets[idTickets].serialNumber = serialNumber;
     listOfTickets[idTickets].fn = fn;
@@ -28,7 +36,7 @@ contract Voucher {
     return idTickets;
   }
 
-  function checkGuarantee(uint idTicket, uint16 time) public constant returns(uint) {
+  function checkGuarantee(uint idTicket, uint16 time) public constant returns(uint restGuaranteeTime) {
     require(time <= listOfTickets[idTicket].guaranteeTime);
     return listOfTickets[idTicket].guaranteeTime - time;
   }
