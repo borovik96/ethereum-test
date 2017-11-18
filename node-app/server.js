@@ -10,6 +10,12 @@ const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 const app = express()
 app.use(express.static('../frontend/build'));
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 app.use(bodyParser.json());
 
 app.listen(3000, () => console.log('Node listening on port 3000!'))
