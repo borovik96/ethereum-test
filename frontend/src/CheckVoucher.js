@@ -11,35 +11,64 @@ import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Form from 'react-bootstrap/lib/Form';
 import axios from 'axios';
 
-function sendForm(e) {
-  e.preventDefault();
-  const form = e.target;
-  var data = form.querySelector('#idVoucher');
-  axios.post('http://138.68.168.208:8545', {"numberVoucher": data.value})
-}
-
-const FormForCheck = () => (
+const FormForCheck = ({sendForm}) => (
     <div className="CheckVoucher">
-        <div className="form-container">
-          <Form className="form-request" onSubmit={sendForm}>
-            <FormGroup>
-              <ControlLabel>Введите данные для проверки</ControlLabel>
-              <FormControl type="text" placeholder="Введите ID" id="idVoucher"/>
-            </FormGroup>
+      <div className="form-container">
+        <Form className="form-request" onSubmit={sendForm}>
+          <FormGroup>
+            <ControlLabel>Введите данные для проверки</ControlLabel>
+            <FormControl type="text" placeholder="Введите ID" id="idVoucher"/>
+          </FormGroup>
 
-            <Button type="submit" bsStyle="primary">
-              Проверить гарантию
-            </Button>
-          </Form>
-        </div>
+          <Button type="submit" bsStyle="primary">
+            Проверить гарантию
+          </Button>
+        </Form>
+      </div>
     </div>
 );
 
+const ShowData = ({ data, loading, clearData }) => (
+    loading
+    ? <div>Подождите, идёт добавление информации в блокчейн</div>
+    : <div>
+      {data.toString()}
+      <Button onClick={clearData}> Посмотреть другой товар</Button>
+      </div>
+);
+
 class CheckVoucher extends Component {
+  state = {
+    loading: false
+  };
+
+  clearData = () => {
+    this.setState({ data: null });
+  };
+
+  sendFormForCheck = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    var data = form.querySelector('#idVoucher');
+    this.setState({
+      loading: true,
+      data: null
+    });
+    axios.get(`http://138.68.168.208:3000/ticket/${data.value}`)
+      .then((result) => {
+        this.setState({ loading: false, data: result.data });
+      });
+  };
+
   render() {
+    const { data, loading } = this.state;
     return (
         <div>
-          <FormForCheck />
+          {
+              data
+                  ? <ShowData clearData={this.clearData} data={data} loading={loading} />
+                  : <FormForCheck sendForm={this.sendFormForCheck} />
+          }
         </div>
     )
   }
