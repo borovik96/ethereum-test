@@ -1,0 +1,71 @@
+body {
+    color: #444;
+}
+
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 12s linear;
+    height: 100px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 100vh;
+    padding: 20px;
+    color: white;
+}
+
+.App-title {
+    font-size: 1.5em;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+@keyframes App-logo-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.description {
+    height: 70vh;
+    background-color: #ddd;
+}
+
+.main {
+    height: 100vh;
+    background-color: #fff;
+}
+
+.head-text {
+    margin: 150px;
+}
+
+.form-container {
+    /*background-color: #777;*/
+    background-image: url('./background-for-form.jpg');
+    padding: 50px 100px;
+    text-align: left;
+}
+
+footer {
+    text-align: left;
+    padding: 50px 100px;
+    color: #999;
+}
+
+#check-button {
+    padding: 50px;
+}
+
+.form-request {
+    width: 40%;
+}
