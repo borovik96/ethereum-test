@@ -35,7 +35,8 @@ module.exports = [
       { name: "_fd", type: "uint256" },
       { name: "_fpd", type: "uint256" },
       { name: "_guaranteeTime", type: "uint256" },
-      { name: "_warrantyCase", type: "bytes16" }
+      { name: "_warrantyCase", type: "bytes16" },
+      { name: "_ticketNumber", type: "uint256" }
     ],
     payable: false,
     stateMutability: "view",

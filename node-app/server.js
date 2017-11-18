@@ -2,10 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Web3 = require('web3');
 const utils = require('./utils');
-const puppeteer = require('puppeteer');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0x1279900e2De7E91c7a119A8D9eD6341C068e2270';
+const CONTRACT_ADDRESS = '0xE0A26Ce768129Fa8A46Ca7f81cC53507Eabb06bd';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
@@ -112,17 +111,3 @@ app.get('/account/:id', (req, res) => {
     }
   )
 });
-
-// app.get('/ticket', (req, res) => {
-//   const { fn, fp, fpd } = req.query;
-//   const browser = await puppeteer.launch();
-//   const page = await browser.newPage();
-//   await page.goto('https://consumer.1-ofd.ru/#/landing');
-//   await page.select('#numberFn', fn);
-//   await page.select('#numberFd', fd);
-//   await page.select('#fp', fp);
-//   await page.click('form[name=searchForm] button');
-//   await page.screenshot({ path: 'example.png' });
-//   console.log('screenshot done');
-//   res.send('done');
-// });
