@@ -55,6 +55,7 @@ app.post('/ticket', (req, res) => {
       if (err) res.status(500);
       const setTicketEvent = contract.setTicketEvent();
       setTicketEvent.watch((eventError, result) => {
+        console.log('Event: ', eventError, result);
         if (eventError) res.error(500);
         res.send(result);
         setTicketEvent.stopWatching();
