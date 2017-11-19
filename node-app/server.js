@@ -91,20 +91,15 @@ app.get('/account/:id', (req, res) => {
       while(indexTicket--) {
         contract.getTicket(cardNumber, indexTicket + 1, (err, result) => {
 
-          let productName = utils.fromHex(result[0]);
-          productName = productName.slice(0, productName.indexOf('\u0000'));
-
-          let serialNumber = utils.fromHex(result[1]);
-          serialNumber = serialNumber.slice(0, serialNumber.indexOf('\u0000'));
-
+          const productName = utils.fromHex(result[0]);
+          const serialNumber = utils.fromHex(result[1]);
           const fn = result[2].toString();
           const fd = result[3].toString();
           const fpd = result[4].toString();
           const guaranteeTime = result[5].toString();
-
-          let warrantyCase = utils.fromHex(result[6]);
-          warrantyCase = warrantyCase.slice(0, warrantyCase.indexOf('\u0000'));
+          const warrantyCase = utils.fromHex(result[6]);
           const ticketId = result[7].toString();
+
           const ticket = {
             serialNumber,
             fn, fd, fpd,

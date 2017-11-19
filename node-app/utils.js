@@ -9,11 +9,13 @@ const utils = {
   },
 
   fromHex(h) {
+    h = h.slice(2);
     var s = ''
     for (var i = 0; i < h.length; i+=2) {
         s += String.fromCharCode(parseInt(h.substr(i, 2), 16))
     }
-    return decodeURIComponent(escape(s))
+    s = decodeURIComponent(escape(s));
+    return s.slice(0, s.indexOf('\u0000'));
 }
 
 }
