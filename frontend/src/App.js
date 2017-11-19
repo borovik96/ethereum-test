@@ -24,7 +24,7 @@ const Main = () => (
         <img src="https://png.icons8.com/?id=50284&size=280" className="App-logo" alt="logo"/>
         <div className="head-text">
           <h1>DeadBeef prod.</h1>
-          <p>Умное описание с использованием слов <strong>Blockchin, Smart contracts, Децентрализация, Криптоинженеринг</strong></p>
+          <p>Умное описание с использованием слов <strong>Blockchain, Smart contracts, Децентрализация, Криптоинженеринг</strong></p>
         </div>
       </header>
       <div className="main">
