@@ -4,8 +4,19 @@ const utils = {
   },
 
   calculateGuaranteeTime(timeOfBuying, during) {
-    const date = new Date(timeOfBuying);
-    return date.setMonth(date.getMonth() + during);
+    const date = new Date(parseInt(timeOfBuying));
+    return date.setMonth(date.getMonth() + parseInt(during));
+  },
+
+  fromHex(h) {
+    h = h.slice(2);
+    console.log(h);
+    var s = ''
+    for (var i = 0; i < h.length; i+=2) {
+        s += String.fromCharCode(parseInt(h.substr(i, 2), 16))
+    }
+    s = decodeURIComponent(escape(s));
+    return s.slice(0, s.indexOf('\u0000'));
   }
 }
 

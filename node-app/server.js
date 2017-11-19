@@ -4,7 +4,7 @@ const Web3 = require('web3');
 const utils = require('./utils');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0x630135b458aaED5f117951D93511e0a7397e70ed';
+const CONTRACT_ADDRESS = '0x39CBae129356384CEAeFdC3EAAB29F02CEc49737';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
@@ -42,6 +42,14 @@ app.post('/ticket', (req, res) => {
     dateOfBuying,
     during, productName, warrantyCase
   } = req.body;
+  console.log({
+    cardNumber,
+    fn, fd, fpd,
+    serialNumber,
+    guaranteeTime: utils.calculateGuaranteeTime(dateOfBuying, during),
+    productName,
+    warrantyCase
+  });
   contract.setTicket(
     cardNumber,
     fn, fd, fpd,
@@ -83,20 +91,15 @@ app.get('/account/:id', (req, res) => {
       while(indexTicket--) {
         contract.getTicket(cardNumber, indexTicket + 1, (err, result) => {
 
-          let productName = web3.toAscii(result[0]);
-          productName = productName.slice(0, productName.indexOf('\u0000'));
-
-          let serialNumber = web3.toAscii(result[1]);
-          serialNumber = serialNumber.slice(0, serialNumber.indexOf('\u0000'));
-
+          const productName = utils.fromHex(result[0]);
+          const serialNumber = utils.fromHex(result[1]);
           const fn = result[2].toString();
           const fd = result[3].toString();
           const fpd = result[4].toString();
           const guaranteeTime = result[5].toString();
-
-          let warrantyCase = web3.toAscii(result[6]);
-          warrantyCase = warrantyCase.slice(0, warrantyCase.indexOf('\u0000'));
+          const warrantyCase = utils.fromHex(result[6]);
           const ticketId = result[7].toString();
+
           const ticket = {
             serialNumber,
             fn, fd, fpd,
