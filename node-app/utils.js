@@ -16,8 +16,7 @@ const utils = {
     }
     s = decodeURIComponent(escape(s));
     return s.slice(0, s.indexOf('\u0000'));
-}
-
+  }
 }
 
 module.exports = utils;
