@@ -10,6 +10,7 @@ const utils = {
 
   fromHex(h) {
     h = h.slice(2);
+    console.log(h);
     var s = ''
     for (var i = 0; i < h.length; i+=2) {
         s += String.fromCharCode(parseInt(h.substr(i, 2), 16))
