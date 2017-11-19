@@ -3,9 +3,9 @@ pragma solidity ^0.4.18;
 contract Voucher {
 
   struct Ticket {
-    bytes16 serialNumber;
-    bytes16 warrantyCase;
-    bytes16 productName;
+    string serialNumber;
+    string warrantyCase;
+    string productName;
     uint fn;
     uint fd;
     uint fpd;
@@ -28,13 +28,13 @@ contract Voucher {
   }
 
   function getTicket(uint cardNumber, uint idTicket) public constant returns(
-                                                            bytes16 _productName,
-                                                            bytes16 _serialNumber,
+                                                            string _productName,
+                                                            string _serialNumber,
                                                             uint _fn,
                                                             uint _fd,
                                                             uint _fpd,
                                                             uint _guaranteeTime,
-                                                            bytes16 _warrantyCase,
+                                                            string _warrantyCase,
                                                             uint _ticketNumber
                                                             ) {
     Buyer storage buyer = listOfBuyers[cardNumber];
@@ -48,7 +48,7 @@ contract Voucher {
     _ticketNumber = buyer.listOfTickets[idTicket].ticketNumber;
   }
 
-  function setTicket(uint cardNumber, uint fn, uint fd, uint fpd, bytes16 serialNumber, uint guaranteeTime, bytes16 warrantyCase, bytes16 productName) public returns (uint idTicket){
+  function setTicket(uint cardNumber, uint fn, uint fd, uint fpd, string serialNumber, uint guaranteeTime, string warrantyCase, string productName) public returns (uint idTicket){
     Buyer storage buyer = listOfBuyers[cardNumber];
     buyer.amountOfTickets++;
     Ticket storage ticket = buyer.listOfTickets[buyer.amountOfTickets];

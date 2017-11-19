@@ -10,23 +10,33 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Form from 'react-bootstrap/lib/Form';
 import axios from 'axios';
+import ok from './checkmark.png';
+import wrong from './cross.png';
+import { Route, Link, Switch} from 'react-router-dom';
+import ShowVoucher from './ShowVoucher';
 
 const FormForCheck = ({sendForm}) => (
     <div className="CheckVoucher">
       <div className="form-container">
-        <Form className="form-request" onSubmit={sendForm}>
+        <Form className="form-request" id="check-form" onSubmit={sendForm}>
           <FormGroup>
             <ControlLabel>Введите данные для проверки</ControlLabel>
-            <FormControl type="text" placeholder="Введите ID" id="idVoucher"/>
+            <FormControl type="text" placeholder="Номер карты" id="cardNumber"/>
           </FormGroup>
 
-          <Button type="submit" bsStyle="primary">
+          <Button type="submit" bsStyle="primary" className="custom-btn">
             Проверить гарантию
           </Button>
         </Form>
       </div>
     </div>
 );
+
+function checkData(date) {
+  console.log(parseInt(date));
+  return parseInt(date) > Date.now();
+}
+
 //{serialNumber: "test", fn: "125546", fd: "123165", fpd: "5486423", guaranteeTime: "54512"}
 const ShowData = ({ data, loading, clearData }) => (
     loading
@@ -37,30 +47,24 @@ const ShowData = ({ data, loading, clearData }) => (
           <div className="response-data">
             <table>
               <tr>
-                <th>Серийный номер:</th>
-                <td>{data.serialNumber}</td>
+                <th>Название продукта</th>
+                <th>Действительная гарантия</th>
               </tr>
-              <tr>
-                <th>Фискальный накопитель:</th>
-                <td>{data.fn}</td>
-              </tr>
-              <tr>
-                <th>Фискальный документ:</th>
-                <td>{data.fd}</td>
-              </tr>
-              <tr>
-                <th>Фискальный признак документа:</th>
-                <td>{data.fpd}</td>
-              </tr>
-              <tr>
-                <th>Гарантия:</th>
-                <td>{data.guaranteeTime}</td>
-              </tr>
+              {
+                data.tickets.sort((a, b) => {
+                  return b.ticketId - a.ticketId;
+                }).map(ticket => (
+                  <tr key={ticket.ticketId}>
+                    <td><Link to={`/check/ticket/${ticket.ticketId}`}>{ticket.productName}</Link></td>
+                    <td className="td-img"><img src={checkData(ticket.guaranteeTime) ? ok : wrong} height="30px" /></td>
+                  </tr>
+                ))
+              }
             </table>
           </div>
           <br/>
           <div>
-            <Button onClick={clearData}> Посмотреть другой товар</Button>
+            <Button onClick={clearData}> Ввести другой номер карты</Button>
           </div>
         </div>
       </Col>
@@ -79,12 +83,12 @@ class CheckVoucher extends Component {
   sendFormForCheck = (e) => {
     e.preventDefault();
     const form = e.target;
-    var data = form.querySelector('#idVoucher');
+    var data = form.querySelector('#cardNumber');
     this.setState({
       loading: true,
       data: null
     }, () => {
-      axios.get(`http://138.68.168.208:3000/ticket/${data.value}`)
+      axios.get(`http://138.68.168.208:3000/account/${data.value}`)
           .then((result) => {
             console.log(result);
             this.setState({loading: false, data: result.data});
@@ -97,11 +101,19 @@ class CheckVoucher extends Component {
     const { data, loading } = this.state;
     return (
         <div>
-          {
-            data
-                ? <ShowData clearData={this.clearData} data={data} loading={loading}/>
-                : <FormForCheck sendForm={this.sendFormForCheck}/>
-          }
+          <Switch>
+            <Route path="/check/ticket/:id" component={(rout) => {
+              return <ShowVoucher 
+                ticket={data && data.tickets && data.tickets.find((el) => rout.match.params.id === el.ticketId)} 
+              />
+            }} />
+            <Route component={() => {
+              return data
+                  ? <ShowData clearData={this.clearData} data={data} loading={loading}/>
+                  : <FormForCheck sendForm={this.sendFormForCheck}/>
+            }} />
+          </Switch>
+          
         </div>
     )
   }
