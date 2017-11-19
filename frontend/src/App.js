@@ -13,6 +13,7 @@ import Form from 'react-bootstrap/lib/Form';
 import axios from 'axios';
 import CheckVoucher from './CheckVoucher';
 import NewVoucher from './NewVoucher';
+import ShowVoucher from './ShowVoucher';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Route, Link} from 'react-router-dom';
@@ -26,23 +27,15 @@ const Main = () => (
           <p>Any Description</p>
         </div>
       </header>
-      <div className="description">
-        <Col xs={12}>
-          <h2>About Us</h2>
-          <p>Какой-нибудь текст о компании и о проекте</p>
-        </Col>
-      </div>
       <div className="main">
-        <Col xs={6}>
+        <Col xs={5}>
           <div id="check-button">
             <p>Что-то</p>
-            <ButtonToolbar>
-              <Link className="btn btn-primary" to="/check">Проверить гарантию</Link>
-            </ButtonToolbar>
+            <Link className="btn btn-default custom-btn" to="/check">Проверить гарантию</Link>
           </div>
         </Col>
-        <Col xs={6}>
-          Image
+        <Col xs={7}>
+          <img src="https://cdn.dribbble.com/users/1519660/screenshots/3449806/minnovare_04_v01.gif" height="573px" />
         </Col>
       </div>
     </div>
@@ -76,6 +69,7 @@ class App extends Component {
           <Route path="/" exact component={Main}/>
           <Route path="/check" component={CheckVoucher}/>
           <Route path="/new" component={NewVoucher}/>
+          <Route path="/ticket/:id" component={ShowVoucher}/>
           <Footer />
         </div>
     );
