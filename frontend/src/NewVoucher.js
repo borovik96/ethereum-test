@@ -61,7 +61,7 @@ const FormForAddingNewVoucher = ({sendForm, loading, calendarOnChange, calendar}
           </FormGroup>
 
           <Button type="submit" bsStyle="primary" className="custom-btn">
-            Создать контракт
+            Мне повезёт!
           </Button>
         </Form>
 

@@ -50,7 +50,12 @@ body {
 }
 
 .head-text {
-    margin: 150px;
+    font-size: 150%;
+    margin: 150px auto;
+    width: 50%;
+}
+.head-text h1 {
+    font-size: 2em;
 }
 
 .form-container {
@@ -72,11 +77,17 @@ footer {
 }
 
 #check-button {
-    padding-top: 50px;
+    padding-top: 60px;
+    text-align: left;
 }
 #check-button p {
     font-size: 150%;
     margin: 30px;
+    margin-bottom: 10px;
+}
+#check-button a {
+    margin-left: 30px;
+    margin-bottom: 20px;
 }
 
 .form-request {
@@ -198,4 +209,16 @@ label {
 
 #check-form {
     margin-top: 200px;
+}
+
+#serialNumber__text {
+    text-transform: capitalize;
+}
+
+.back-link {
+    position: fixed;
+    width: 520px;
+    height: 700px;
+    right: 30px;
+    top: 30px;
 }

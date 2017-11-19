@@ -102,7 +102,9 @@ class CheckVoucher extends Component {
         <div>
           <Switch>
             <Route path="/check/ticket/:id" component={(rout) => {
-              return <ShowVoucher 
+              console.log(rout);
+              return <ShowVoucher
+                history={rout.history}
                 ticket={data && data.tickets && data.tickets.find((el) => rout.match.params.id === el.ticketId)} 
               />
             }} />

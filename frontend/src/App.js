@@ -23,15 +23,15 @@ const Main = () => (
       <header className="App-header">
         <img src="https://png.icons8.com/?id=50284&size=280" className="App-logo" alt="logo"/>
         <div className="head-text">
-          <h1>Project Name and Few Words</h1>
-          <p>Any Description</p>
+          <h1>DeadBeef prod.</h1>
+          <p>Умное описание с использованием слов <strong>Blockchin, Smart contracts, Децентрализация, Криптоинженеринг</strong></p>
         </div>
       </header>
       <div className="main">
         <Col xs={5}>
           <div id="check-button">
             <p>Для проверки гарантии по Вашим покупкам, используйте номер Вашей банковской карты</p>
-            <Link className="btn btn-default custom-btn" to="/check">Проверить гарантию</Link>
+            <Link className="btn btn-default custom-btn" to="/check">Проверить гарантию</Link><br/>
             <p>Для добавления новой записи в блокчейн, потребуется основная информация с чека и гарантийного талона</p>
             <Link className="btn btn-default custom-btn" to="/new">Добавить запись</Link>
           </div>
@@ -73,6 +73,7 @@ class App extends Component {
           <Route path="/new" component={NewVoucher}/>
           <Route path="/ticket/:id" component={ShowVoucher}/>
           <Footer />
+          <Link to="/" className="back-link"></Link>
         </div>
     );
   }
