@@ -4,7 +4,7 @@ const Web3 = require('web3');
 const utils = require('./utils');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0x39CBae129356384CEAeFdC3EAAB29F02CEc49737';
+const CONTRACT_ADDRESS = '0xFDd7335ab78EE5eCc9B4810093A363e48030adc3';
 const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
 
 const app = express()
@@ -90,14 +90,13 @@ app.get('/account/:id', (req, res) => {
       const tickets = [];
       while(indexTicket--) {
         contract.getTicket(cardNumber, indexTicket + 1, (err, result) => {
-
-          const productName = utils.fromHex(result[0]);
-          const serialNumber = utils.fromHex(result[1]);
+          const productName = result[0];
+          const serialNumber = result[1];
           const fn = result[2].toString();
           const fd = result[3].toString();
           const fpd = result[4].toString();
           const guaranteeTime = result[5].toString();
-          const warrantyCase = utils.fromHex(result[6]);
+          const warrantyCase = result[6];
           const ticketId = result[7].toString();
 
           const ticket = {
