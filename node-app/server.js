@@ -4,8 +4,8 @@ const Web3 = require('web3');
 const utils = require('./utils');
 
 const ABI = require('./ABI');
-const CONTRACT_ADDRESS = '0xFDd7335ab78EE5eCc9B4810093A363e48030adc3';
-const transactionOptions = { gas: 500000, gasPrice: 21 * 1000000000 };
+const CONTRACT_ADDRESS = '0xA3cD90BE4f9806b7bFfd523A6157b01de6bdf0D5';
+const transactionOptions = { gas: 500000, gasPrice: 4 * 1000000000 };
 
 const app = express()
 app.use(express.static('../frontend/build'));
