@@ -5,7 +5,7 @@ const utils = require('./utils');
 
 const ABI = require('./ABI');
 const CONTRACT_ADDRESS = '0xA3cD90BE4f9806b7bFfd523A6157b01de6bdf0D5';
-const transactionOptions = { gas: 500000, gasPrice: 4 * 1000000000 };
+const transactionOptions = { gas: 500000, gasPrice: 20 * 1000000000 };
 
 const app = express()
 app.use(express.static('../frontend/build'));
@@ -27,7 +27,7 @@ const personal = web3.personal;
 // utils.importAccount(web3, '7703a860b087317bbd2e44a52a233df843ad22db3b60fb816aef97a8054f20a2', 'toor');
 
 console.log('Accounts: ', eth.accounts);
-eth.defaultAccount = eth.accounts[1];
+eth.defaultAccount = eth.accounts[2];
 
 personal.unlockAccount(eth.defaultAccount, 'toor', 10000);
 
