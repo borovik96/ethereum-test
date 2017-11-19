@@ -17,6 +17,7 @@ import ShowVoucher from './ShowVoucher';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Route, Link} from 'react-router-dom';
+import Loader from './Loader';
 
 const Main = () => (
     <div>
@@ -72,6 +73,7 @@ class App extends Component {
           <Route path="/check" component={CheckVoucher}/>
           <Route path="/new" component={NewVoucher}/>
           <Route path="/ticket/:id" component={ShowVoucher}/>
+          <Route path="/loader" component={Loader}/>
           <Footer />
           <Link to="/" className="back-link"></Link>
         </div>
