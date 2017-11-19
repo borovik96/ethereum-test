@@ -74,6 +74,10 @@ footer {
 #check-button {
     padding-top: 50px;
 }
+#check-button p {
+    font-size: 150%;
+    margin: 30px;
+}
 
 .form-request {
     width: 40%;
