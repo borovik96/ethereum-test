@@ -74,6 +74,10 @@ footer {
 #check-button {
     padding-top: 50px;
 }
+#check-button p {
+    font-size: 150%;
+    margin: 30px;
+}
 
 .form-request {
     width: 40%;
@@ -84,21 +88,46 @@ footer {
     padding-bottom: 4%;
 }
 
-.response-for-check__window {
-    font-size: 130%;
+.response-data {
+    margin-top: 150px;
+}
+.response-for-check {
+    font-size: 150%;
     padding: 30px 70px;
-    background-color: #ddd;
-    text-align: center;
-    margin: 5% 25%;
-    border-radius: 10px;
+    text-align: left;
+    color: wheat;
+    background-image: url('./new-background.jpg');
+    background-position: center right;
+    background-repeat: no-repeat;
+    min-height: 600px;
 }
 .response-for-check table  {
+    margin-top: 25px;
+    width: 50%;
     text-align: left;
-    margin: 0 auto;
 }
-.response-for-check th, td {
+.response-for-check td {
     padding-right: 20px;
     padding-top: 10px;
+}
+
+.response-for-check tr:first-child {
+    text-transform: uppercase;
+    font-size: .9em;
+}
+.response-for-check th {
+    
+    padding-right: 20px;
+    padding-top: 10px;
+}
+
+.check-table__head {
+    text-align: center;
+}
+
+.response-for-check a {
+    color: #ddd;
+    text-decoration: none !important;
 }
 
 .response {

@@ -10,8 +10,8 @@ import FormGroup from 'react-bootstrap/lib/FormGroup';
 import ControlLabel from 'react-bootstrap/lib/ControlLabel';
 import Form from 'react-bootstrap/lib/Form';
 import axios from 'axios';
-import ok from './checkmark.png';
-import wrong from './cross.png';
+import ok from './tick.svg';
+import wrong from './cancel.svg';
 import { Route, Link, Switch} from 'react-router-dom';
 import ShowVoucher from './ShowVoucher';
 
@@ -43,12 +43,13 @@ const ShowData = ({ data, loading, clearData }) => (
         ? <div>Подождите, идёт добавление информации в блокчейн</div>
         : <div>
       <Col xs={12} className="response-for-check">
-        <div className="response-for-check__window">
+        
           <div className="response-data">
+            <h2>Информация о последних покупках</h2>
             <table>
               <tr>
-                <th>Название продукта</th>
-                <th>Действительная гарантия</th>
+                <td className="">Название продукта</td>
+                <td className="check-table__head">Действительная гарантия</td>
               </tr>
               {
                 data.tickets.sort((a, b) => {
@@ -57,16 +58,14 @@ const ShowData = ({ data, loading, clearData }) => (
                   <tr key={ticket.ticketId}>
                     <td><Link to={`/check/ticket/${ticket.ticketId}`}>{ticket.productName}</Link></td>
                     <td className="td-img"><img src={checkData(ticket.guaranteeTime) ? ok : wrong} height="30px" /></td>
-                  </tr>
+                  <hr/></tr>
                 ))
               }
             </table>
           </div>
           <br/>
-          <div>
-            <Button onClick={clearData}> Ввести другой номер карты</Button>
-          </div>
-        </div>
+          <Button onClick={clearData} className="custom-btn"> Ввести другой номер карты</Button>
+
       </Col>
     </div>
 );

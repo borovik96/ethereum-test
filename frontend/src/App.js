@@ -30,8 +30,10 @@ const Main = () => (
       <div className="main">
         <Col xs={5}>
           <div id="check-button">
-            <p>Что-то</p>
+            <p>Для проверки гарантии по Вашим покупкам, используйте номер Вашей банковской карты</p>
             <Link className="btn btn-default custom-btn" to="/check">Проверить гарантию</Link>
+            <p>Для добавления новой записи в блокчейн, потребуется основная информация с чека и гарантийного талона</p>
+            <Link className="btn btn-default custom-btn" to="/new">Добавить запись</Link>
           </div>
         </Col>
         <Col xs={7}>
