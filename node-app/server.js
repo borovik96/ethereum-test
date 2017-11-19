@@ -91,10 +91,10 @@ app.get('/account/:id', (req, res) => {
       while(indexTicket--) {
         contract.getTicket(cardNumber, indexTicket + 1, (err, result) => {
 
-          let productName = web3.toAscii(result[0]);
+          let productName = utils.fromHex(result[0]);
           productName = productName.slice(0, productName.indexOf('\u0000'));
 
-          let serialNumber = web3.toAscii(result[1]);
+          let serialNumber = utils.fromHex(result[1]);
           serialNumber = serialNumber.slice(0, serialNumber.indexOf('\u0000'));
 
           const fn = result[2].toString();
@@ -102,7 +102,7 @@ app.get('/account/:id', (req, res) => {
           const fpd = result[4].toString();
           const guaranteeTime = result[5].toString();
 
-          let warrantyCase = web3.toAscii(result[6]);
+          let warrantyCase = utils.fromHex(result[6]);
           warrantyCase = warrantyCase.slice(0, warrantyCase.indexOf('\u0000'));
           const ticketId = result[7].toString();
           const ticket = {
